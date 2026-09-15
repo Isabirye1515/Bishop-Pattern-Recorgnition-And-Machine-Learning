@@ -1,0 +1,15 @@
+services:
+  backend:
+    build: ./
+    ports:
+      - "5000:5000"
+
+  frontend:
+    build: ./prml-into
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./prml-into:/app
+      - /app/node_modules
+    depends_on:
+      - backend
