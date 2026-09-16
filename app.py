@@ -4,7 +4,7 @@ import pandas as pd
 app = Flask(__name__)
 
 data = pd.read_csv("melb_data.csv")
-info = data[0:13580]
+info = data[0:200]
 
 
 @app.route("/api/houses")

@@ -22,6 +22,28 @@ export interface MelbourneHouse {
   Propertycount: number | null;
 }
 
+export interface Chapter{
+  name:string,
+  number: number,
+  description:string,
+  link:string
+  hasChildren?:boolean,
+  children?:Chapter[]
+
+}
+export const Chapters:Chapter[] = [
+  {name:"Introducing Polynomial Models",
+    description:"Polynonial Models and Curve fitting",
+    number:1,
+    link:"/intro",
+    children:
+[ { name: "Data Visualisation", number: 1.1, link: "/scatter-graph", description: "...", }, 
+  { name: "Least Squares", number: 1.2, link: "/least-squares", description: "...", }, 
+  { name: "Maximum Likelihood", number: 1.3, link: "/maximum-likelihood", description: "...", }, ]
+    
+   }
+]
+
 const endpoint = "api/houses";
 
 export const getHouses = async (): Promise<MelbourneHouse[]> => {
