@@ -79,7 +79,7 @@ const HousePriceChart = ({ houses }: HousePriceChartProps) => {
   );
 
   return (
-    <Box sx={{ width: "100%", mt: 3 }}>
+    <Box sx={{ width: "100%", mt: 10 }}>
       <Typography variant="h5" gutterBottom>
         Feature vs House Price
       </Typography>
