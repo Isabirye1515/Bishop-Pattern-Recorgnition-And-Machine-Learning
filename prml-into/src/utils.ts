@@ -38,7 +38,7 @@ export const Chapters:Chapter[] = [
     link:"/intro",
     children:
 [ { name: "Data Visualisation", number: 1.1, link: "/scatter-graph", description: "...", }, 
-  { name: "Least Squares", number: 1.2, link: "/least-squares", description: "...", }, 
+  { name: "Polynomial Fit Graph", number: 1.2, link: "/polynomial-fit", description: "...", }, 
   { name: "Maximum Likelihood", number: 1.3, link: "/maximum-likelihood", description: "...", }, ]
     
    }
@@ -57,3 +57,17 @@ export const getHouses = async (): Promise<MelbourneHouse[]> => {
 
   return data;
 };
+
+export const getFromServer = async(endpoint:string,callback:Function)=>{
+  try{
+  const response = await fetch(endpoint)
+  if(response.ok){
+    let data = await response.json()
+    callback(data)
+
+  }
+}catch(error){
+  console.error(error)
+
+}
+}

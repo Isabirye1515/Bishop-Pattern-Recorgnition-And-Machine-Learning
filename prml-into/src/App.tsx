@@ -5,6 +5,7 @@ import HeaderPage from './components/header'
 import HousePriceChart from './components/graphs/scatergraph'
 import { getHouses, type MelbourneHouse } from './utils';
 import { useEffect, useState } from 'react';
+import PolynomialFitPage from './components/graphs/polynomialFitGraph';
 
 function App() {
    const [houses, setHouses] = useState<MelbourneHouse[]>([]);
@@ -26,6 +27,7 @@ function App() {
       <HeaderPage />
       <Routes>
         <Route path='/scatter-graph' element={<HousePriceChart houses={houses} />} />
+        <Route path = "/polynomial-fit" element={<PolynomialFitPage/>} />
       </Routes>
       </>
   )
