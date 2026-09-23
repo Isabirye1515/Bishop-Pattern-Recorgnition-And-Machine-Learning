@@ -5,7 +5,7 @@ from coefficients import polynomial_fit
 app = Flask(__name__)
 
 data = pd.read_csv("melb_data.csv")
-info = data[0:10000]
+info = data[0:200]
 
 @app.route("/api/polynomial-fit")
 def polynomial_fit_api():
