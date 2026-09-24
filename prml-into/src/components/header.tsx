@@ -12,7 +12,7 @@ import {
   Typography,
   Menu,
   MenuItem,
-  Collapse,
+  Collapse
 } from "@mui/material";
 
 import MenuIcon from "@mui/icons-material/Menu";

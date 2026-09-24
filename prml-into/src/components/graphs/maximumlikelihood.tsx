@@ -50,8 +50,6 @@ const NUMERIC_KEYS: NumericKey[] = [
   "YearBuilt",
 ]
 
-// ---------- Gaussian ----------
-// p(x | mu, sigma^2) = 1/sqrt(2 pi sigma^2) * exp(-(x - mu)^2 / (2 sigma^2))
 const normalPdf = (x: number, mu: number, sigma2: number) => {
   const s2 = Math.max(sigma2, 1e-12)
   return (
@@ -60,7 +58,6 @@ const normalPdf = (x: number, mu: number, sigma2: number) => {
   )
 }
 
-// MLE for a Gaussian (biased, divide by n)
 const gaussianMLE = (xs: number[]) => {
   const n = xs.length
   if (n === 0) return { mu: 0, sigma2: 1 }
@@ -69,7 +66,6 @@ const gaussianMLE = (xs: number[]) => {
   return { mu, sigma2: Math.max(sigma2, 1e-9) }
 }
 
-// Average log-likelihood per sample (comparable across features / N)
 const avgLogLik = (xs: number[], mu: number, sigma2: number) => {
   if (xs.length === 0 || sigma2 <= 0) return -Infinity
   let s = 0
@@ -83,11 +79,9 @@ const MaximumLikelihood = () => {
   const [error, setError] = useState<string | null>(null)
   const [feature, setFeature] = useState<NumericKey>("Price")
 
-  // user-controlled parameters
   const [mu, setMu] = useState(0)
   const [sigma2, setSigma2] = useState(1)
 
-  // ---------- fetch ----------
   useEffect(() => {
     const run = async () => {
       try {
@@ -102,7 +96,6 @@ const MaximumLikelihood = () => {
     run()
   }, [])
 
-  // ---------- extract the numeric column ----------
   const values = useMemo(
     () =>
       data
@@ -111,20 +104,17 @@ const MaximumLikelihood = () => {
     [data, feature]
   )
 
-  // ---------- true MLE of this feature ----------
   const { mu: mleMu, sigma2: mleSigma2 } = useMemo(
     () => gaussianMLE(values),
     [values]
   )
 
-  // snap sliders to MLE whenever feature or data changes
   useEffect(() => {
     if (values.length === 0) return
     setMu(mleMu)
     setSigma2(mleSigma2)
   }, [feature, values.length, mleMu, mleSigma2])
 
-  // ---------- x domain ----------
   const { xMin, xMax } = useMemo(() => {
     if (values.length === 0) return { xMin: 0, xMax: 1 }
     const lo = Math.min(...values)
@@ -133,7 +123,6 @@ const MaximumLikelihood = () => {
     return { xMin: lo - pad, xMax: hi + pad }
   }, [values])
 
-  // ---------- histogram (as density) + user Gaussian + MLE Gaussian ----------
   const { chartData, binWidth } = useMemo(() => {
     if (values.length === 0) {
       return { chartData: [], binWidth: 1 }
@@ -154,12 +143,8 @@ const MaximumLikelihood = () => {
       bins[idx].count += 1
     }
 
-    // density = count / (N * binWidth)
     const N = values.length
     const density = bins.map((b) => b.count / (N * width))
-
-    // Build one row per bin centre. That gives a shared x-grid for the bars,
-    // the user Gaussian, and the MLE Gaussian — no interpolation needed.
     const chartData = bins.map((b, i) => ({
       x: Math.round(b.center),
       density: density[i],
@@ -170,7 +155,6 @@ const MaximumLikelihood = () => {
     return { chartData, binWidth: width }
   }, [values, xMin, xMax, mu, sigma2, mleMu, mleSigma2])
 
-  // ---------- log-likelihood readout ----------
   const userLL = useMemo(
     () => avgLogLik(values, mu, sigma2),
     [values, mu, sigma2]
@@ -180,7 +164,6 @@ const MaximumLikelihood = () => {
     [values, mleMu, mleSigma2]
   )
 
-  // ---------- slider bounds ----------
   const { muMin, muMax, varMin, varMax } = useMemo(() => {
     if (values.length === 0)
       return { muMin: 0, muMax: 1, varMin: 0.001, varMax: 10 }
@@ -257,14 +240,12 @@ const MaximumLikelihood = () => {
               ]}
             />
             <Legend />
-            {/* empirical density */}
             <Bar
               dataKey="density"
               name="Empirical density"
               fill="#8884d8"
               fillOpacity={0.55}
             />
-            {/* MLE Gaussian (reference) */}
             <Line
               type="monotone"
               dataKey="mlePdf"
@@ -275,7 +256,6 @@ const MaximumLikelihood = () => {
               dot={false}
               isAnimationActive={false}
             />
-            {/* user Gaussian */}
             <Line
               type="monotone"
               dataKey="pdf"

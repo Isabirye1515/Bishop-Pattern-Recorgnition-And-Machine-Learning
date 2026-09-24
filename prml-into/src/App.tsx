@@ -7,6 +7,7 @@ import { getHouses, type MelbourneHouse } from './utils';
 import { useEffect, useState } from 'react';
 import PolynomialFitPage from './components/graphs/polynomialFitGraph';
 import MaximumLikelihood from './components/graphs/maximumlikelihood';
+import Introduction from './components/intoduction';
 
 function App() {
    const [houses, setHouses] = useState<MelbourneHouse[]>([]);
@@ -27,6 +28,7 @@ function App() {
       <>
       <HeaderPage />
       <Routes>
+        <Route path='/' element={<Introduction/>} />
         <Route path='/scatter-graph' element={<HousePriceChart houses={houses} />} />
         <Route path = "/polynomial-fit" element={<PolynomialFitPage/>} />
         <Route path = "/maximum-likelihood" element={<MaximumLikelihood />} />
