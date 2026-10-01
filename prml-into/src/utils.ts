@@ -22,6 +22,26 @@ export interface MelbourneHouse {
   Propertycount: number | null;
 }
 
+export interface Video{
+  id:number,
+  title:string,
+  description:string,
+  url:string,
+}
+
+export const Videos:Video[] = [
+  {id:1,
+    description:"Understanding Maximum Likelihood",
+    title:"Maximum Likelihood",
+    url:"https://youtube.com/shorts/6wXNpMeeg0E?si=bYcLKVsY6ltQ5OgN"
+  },
+  {id:2,
+    title:"Regulisation",
+    description:"Understanding Regularization",
+    url:"https://youtu.be/eoLXse6rvxE?si=JH19U2gNe3_fLdvd"
+  }
+]
+
 export interface Chapter{
   name:string,
   number: number,

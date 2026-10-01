@@ -20,6 +20,7 @@ import {
   AccountCircle,
   ExpandLess,
   ExpandMore,
+  PersonalVideo,
 } from "@mui/icons-material";
 
 import { Link as RouterLink } from "react-router-dom";
@@ -132,11 +133,27 @@ const HeaderPage = () => {
             variant="h6"
             component="div"
             sx={{ flexGrow: 1 }}
+            onClick={() => {
+              window.location.href = "/";
+            }}
           >
             Bishop Pattern Recognition And Machine Learning
           </Typography>
 
           {/* Account menu */}
+               <IconButton
+                        
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                color="inherit"
+                onClick={() => {
+                  window.location.href = "/videos";
+                }}
+              >
+          <PersonalVideo  aria-label="Tutorials" />
+            </IconButton>
           {auth && (
             <div>
               <IconButton
