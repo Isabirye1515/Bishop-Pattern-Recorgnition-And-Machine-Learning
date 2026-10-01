@@ -39,6 +39,17 @@ export const Videos:Video[] = [
     title:"Regulisation",
     description:"Understanding Regularization",
     url:"https://youtu.be/eoLXse6rvxE?si=JH19U2gNe3_fLdvd"
+  },
+  {id:3,
+    title:"Prior And Posterior",
+    description:"Understanding Prior and Posterior",
+    url:"https://youtu.be/HEnJRwJ23us?si=kTi6r7STfmlxTRqY"
+  },
+  {
+    id:4,
+    title:"Conjugatte Prior",
+    description:"Understanding Conjugate Prior",
+    url:"https://youtu.be/mvGj4OKbDcY?si=WKGG-cmx9dKtxdHY"
   }
 ]
 
