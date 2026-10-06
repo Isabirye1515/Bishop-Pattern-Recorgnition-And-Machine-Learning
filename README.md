@@ -10,3 +10,11 @@ Run the packages install commander
 Then run Docker build
 
 > docker compose up -d --build
+
+To run the examples provided to show an estimation for the price of the first item in the dataset
+> docker  exec -it prml-intro-backend-1 bash
+
+ then
+ 
+>python3 bayes_prediction.py or python3 poly_prediction.py
+
