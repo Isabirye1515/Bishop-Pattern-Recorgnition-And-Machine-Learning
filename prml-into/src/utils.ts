@@ -70,8 +70,17 @@ export const Chapters:Chapter[] = [
     children:
 [ { name: "Data Visualisation", number: 1.1, link: "/scatter-graph", description: "...", }, 
   { name: "Polynomial Fit Graph", number: 1.2, link: "/polynomial-fit", description: "...", }, 
-  { name: "Maximum Likelihood", number: 1.3, link: "/maximum-likelihood", description: "...", }, ]
+  { name: "Maximum Likelihood", number: 1.3, link: "/maximum-likelihood", description: "...", },
+ ]
     
+   },
+   {name:"Probability Distributions",
+    number:2,
+    description:"Understanding Probability Distributions",
+    link:"/binomial-graph",
+    children:[
+      { name: "Bayesian Bernoulli", number: 2.1, link: "/binomial-graph", description: "...", },
+    ]
    }
 ]
 
