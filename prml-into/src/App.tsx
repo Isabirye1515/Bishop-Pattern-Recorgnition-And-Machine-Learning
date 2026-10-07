@@ -9,6 +9,7 @@ import PolynomialFitPage from './components/graphs/polynomialFitGraph';
 import MaximumLikelihood from './components/graphs/maximumlikelihood';
 import Introduction from './components/intoduction';
 import VideosPage from './components/videos';
+import StatsPage from './components/graphs/binomialGraph';
 
 function App() {
    const [houses, setHouses] = useState<MelbourneHouse[]>([]);
@@ -34,6 +35,7 @@ function App() {
         <Route path = "/polynomial-fit" element={<PolynomialFitPage/>} />
         <Route path = "/maximum-likelihood" element={<MaximumLikelihood />} />
         <Route path = "/videos" element = {<VideosPage />}/>
+        <Route path = "/binomial-graph" element = {<StatsPage/>}/>
       </Routes>
       </>
   )
