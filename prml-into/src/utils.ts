@@ -50,6 +50,12 @@ export const Videos:Video[] = [
     title:"Conjugatte Prior",
     description:"Understanding Conjugate Prior",
     url:"https://youtu.be/mvGj4OKbDcY?si=WKGG-cmx9dKtxdHY"
+  },
+  {
+    id:5,
+    title:"Bayes theorem for gussian variables.",
+    description:"Understanding Bayes theorem for gussian variables.",
+    url:"https://youtu.be/ocYQhNxt8WY?si=Zb4eL7gKU6qknOI8"
   }
 ]
 
