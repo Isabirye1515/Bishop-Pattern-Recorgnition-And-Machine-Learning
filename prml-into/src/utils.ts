@@ -57,6 +57,15 @@ export const Videos:Video[] = [
     description:"Understanding Bayes theorem for gussian variables.",
     url:"https://youtu.be/ocYQhNxt8WY?si=Zb4eL7gKU6qknOI8"
   }
+,
+{
+    id:5,
+    title:"Multinomial Distribution",
+    description:"Understanding Multinomial Distribution",
+    url:"https://youtu.be/syVW7DgvUaY"
+  }
+
+
 ]
 
 export interface Chapter{
@@ -86,6 +95,7 @@ export const Chapters:Chapter[] = [
     link:"/binomial-graph",
     children:[
       { name: "Bayesian Bernoulli", number: 2.1, link: "/binomial-graph", description: "...", },
+      { name: "Multinomial Distribution", number: 2.2, link: "/multinomial", description: "...", },
     ]
    }
 ]
@@ -116,4 +126,49 @@ export const getFromServer = async(endpoint:string,callback:Function)=>{
   console.error(error)
 
 }
+
+
+
+
 }
+export interface MultinomialItem {
+  category: string;
+  count: number;
+  mle: number;
+  posterior: number;
+}
+
+export interface MultinomialResponse {
+  feature: string;
+  n: number;
+  k: number;
+  prior: { alpha: number[]; alpha0: number };
+  posterior: { alpha: number[]; alpha0: number };
+  log_likelihood: number;
+  log_multinomial_coefficient: number;
+  multinomial_probability: number;
+  dirichlet_pdf_at_mle: number;
+  combined: MultinomialItem[];
+}
+
+export const CATEGORY_LABELS: Record<string, Record<string, string>> = {
+  Type: {
+    h: "House",
+    t: "Townhouse",
+    u: "Unit",
+  },
+  Method: {
+    S: "Sold",
+    SP: "Sold Prior",
+    PI: "Passed In",
+    VB: "Vendor Bid",
+    SA: "Sold After",
+  },
+  Regionname: {
+    "Northern Metropolitan": "Northern Metropolitan",
+    "Southern Metropolitan": "Southern Metropolitan",
+    "Western Metropolitan": "Western Metropolitan",
+    "Eastern Metropolitan": "Eastern Metropolitan",
+  },
+  CouncilArea: {},
+};
