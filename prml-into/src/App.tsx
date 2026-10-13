@@ -10,7 +10,6 @@ import MaximumLikelihood from './components/graphs/maximumlikelihood';
 import Introduction from './components/intoduction';
 import VideosPage from './components/videos';
 import StatsPage from './components/graphs/binomialGraph';
-import MultinomialGraph from './components/graphs/multinomialGraph';
 
 function App() {
    const [houses, setHouses] = useState<MelbourneHouse[]>([]);
@@ -37,8 +36,6 @@ function App() {
         <Route path = "/maximum-likelihood" element={<MaximumLikelihood />} />
         <Route path = "/videos" element = {<VideosPage />}/>
         <Route path = "/binomial-graph" element = {<StatsPage/>}/>
-        <Route path = "/multinomial" element = {<MultinomialGraph/>}/>
-        
       </Routes>
       </>
   )
