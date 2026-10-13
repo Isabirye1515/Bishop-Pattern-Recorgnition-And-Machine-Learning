@@ -21,7 +21,8 @@ const VideosPage = () => {
           <ReactPlayer
             controls
             src={video.url}
-            width="100%"
+            width="90%"
+            height="auto"
           />
         </Grid>
       ))}

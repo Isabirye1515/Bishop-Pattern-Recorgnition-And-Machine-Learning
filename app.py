@@ -1,12 +1,14 @@
 from flask import Flask, jsonify, request
 import pandas as pd
 from binomial import bernoulli_bayes_curves, discrete_distribution
+from multinomial import multinomial_distribution
 from coefficients import polynomial_fit
 
 app = Flask(__name__)
 
 data = pd.read_csv("melb_data.csv")
 info = data[0:200]
+
 
 @app.route("/api/distribution")
 def distribution_api():
@@ -30,6 +32,7 @@ def distribution_api():
         return jsonify({
             "error": str(error)
         }), 400
+
 
 @app.route("/api/bernoulli-bayes")
 def bernoulli_bayes_api():
@@ -68,6 +71,7 @@ def bernoulli_bayes_api():
     except ValueError as error:
         return jsonify({"error": str(error)}), 400
 
+
 @app.route("/api/polynomial-fit")
 def polynomial_fit_api():
 
@@ -88,6 +92,17 @@ def polynomial_fit_api():
             "error": str(error)
         }), 400
 
+
+@app.route("/api/multinomial")
+def multinomial_api():
+    feature = request.args.get("feature", "Type")
+    try:
+        result = multinomial_distribution(data, feature)
+        return jsonify(result)
+    except ValueError as error:
+        return jsonify({"error": str(error)}), 400
+
+    
 
 @app.route("/api/houses")
 def home():
