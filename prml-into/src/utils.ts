@@ -63,6 +63,11 @@ export const Videos:Video[] = [
     title:"Multinomial Distribution",
     description:"Understanding Multinomial Distribution",
     url:"https://youtu.be/syVW7DgvUaY"
+  },
+  {id:7,
+    title:"Eigenvalues and Eigenvectors",
+    description:"Understanding Eigenvalues and Eigenvectors",
+    url:"https://youtu.be/BWvx4wUSGdA?si=nJSVLV70yjYZWoo_"
   }
 
 
