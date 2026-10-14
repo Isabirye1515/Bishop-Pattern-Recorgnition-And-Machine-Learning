@@ -96,6 +96,7 @@ export const Chapters:Chapter[] = [
     children:[
       { name: "Bayesian Bernoulli", number: 2.1, link: "/binomial-graph", description: "...", },
       { name: "Multinomial Distribution", number: 2.2, link: "/multinomial", description: "...", },
+      { name: "Gaussian Distribution", number: 2.3, link: "/guassian", description: "...", }
     ]
    }
 ]

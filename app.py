@@ -1,6 +1,14 @@
-from flask import Flask, jsonify, request
+from flask import Flask, json, jsonify, request
 import pandas as pd
 from binomial import bernoulli_bayes_curves, discrete_distribution
+from guassian import (
+    categorical_marginal_distribution,
+    conditional_feature_distribution,
+    marginal_density,
+    is_discrete_feature,
+    discrete_marginal_distribution,
+    conditional_density,
+)
 from multinomial import multinomial_distribution
 from coefficients import polynomial_fit
 
@@ -101,8 +109,135 @@ def multinomial_api():
         return jsonify(result)
     except ValueError as error:
         return jsonify({"error": str(error)}), 400
-
     
+
+@app.get("/api/distribution/features")
+def distribution_features_api():
+    features = []
+
+    for feature in data.columns:
+        series = data[feature].dropna()
+        numeric = pd.api.types.is_numeric_dtype(data[feature])
+        discrete = is_discrete_feature(data, feature)
+
+        if discrete:
+            if numeric:
+                values = sorted(
+                    pd.to_numeric(series, errors="coerce")
+                    .dropna().unique().tolist()
+                )
+            else:
+                values = (
+                    series.astype(str)
+                    .value_counts()
+                    .index.tolist()
+                )
+
+            # Avoid sending an excessively large list to React.
+            values = values[:100]
+        else:
+            values = []
+
+        features.append({
+            "name": feature,
+            "numeric": bool(numeric),
+            "kind": "discrete" if discrete else "continuous",
+            "values": values,
+        })
+
+    return jsonify({"features": features})
+
+
+@app.get("/api/distribution/marginal")
+def marginal_api():
+    try:
+        feature = request.args.get("feature", "").strip()
+        if not feature:
+            raise ValueError("Select a feature.")
+
+        if feature not in data.columns:
+            raise ValueError(f"Feature '{feature}' does not exist.")
+
+        bandwidth = float(request.args.get("bandwidth", 0.3))
+        points = int(request.args.get("points", 100))
+
+        if not 0 < bandwidth <= 10:
+            raise ValueError("Bandwidth must be between 0 and 10.")
+
+        if not 20 <= points <= 500:
+            raise ValueError("Points must be between 20 and 500.")
+
+        if is_discrete_feature(data, feature):
+            result = discrete_marginal_distribution(data, feature)
+            kind = "discrete"
+        else:
+            result = marginal_density(
+                data, feature, bandwidth, points
+            )
+            kind = "continuous"
+
+        return jsonify({
+            "feature": feature,
+            "kind": kind,
+            "data": result,
+            "observations_used": int(data[feature].notna().sum()),
+        })
+
+    except (ValueError, TypeError) as error:
+        return jsonify({"error": str(error)}), 400
+
+
+@app.get("/api/distribution/conditional")
+def conditional_api():
+    try:
+        target = request.args.get("target", "").strip()
+        raw_given = request.args.get("given", "{}")
+
+        if not target:
+            raise ValueError("Select a target feature.")
+
+        try:
+            given = json.loads(raw_given)
+        except json.JSONDecodeError:
+            raise ValueError("'given' must contain valid JSON.")
+
+        if not isinstance(given, dict) or not given:
+            raise ValueError(
+                "Provide at least one conditioning feature and value."
+            )
+
+        if not all(isinstance(k, str) for k in given):
+            raise ValueError("Condition feature names must be strings.")
+
+        bandwidth = float(request.args.get("bandwidth", 0.3))
+        points = int(request.args.get("points", 100))
+
+        if not 0 < bandwidth <= 10:
+            raise ValueError("Bandwidth must be between 0 and 10.")
+
+        if not 20 <= points <= 500:
+            raise ValueError("Points must be between 20 and 500.")
+
+        result = conditional_feature_distribution(
+            data=data,
+            target=target,
+            given=given,
+            bandwidth=bandwidth,
+            points=points,
+        )
+
+        return jsonify(result)
+
+    except (ValueError, TypeError) as error:
+        app.logger.warning("Conditional distribution error: %s", error)
+        return jsonify({"error": str(error)}), 400
+
+    except Exception:
+        app.logger.exception("Unexpected conditional distribution error")
+        return jsonify({
+            "error": "Unexpected server error. Check the Flask terminal."
+        }), 500
+
 
 @app.route("/api/houses")
 def home():
